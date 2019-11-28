@@ -1,47 +1,75 @@
-# The Online Shop - Lab (Part 1); Flask Routing 
+# The Online Shop - Lab (Part 2); Databases 
 <br/>
-Today, we are creating <b>an awesome online shop!</b>
-This is where I want to see the <b>creativity</b> kick in.
-<br/>
-Firstly, <b>Come up</b> with <b>a name</b> for your shop and <b>an idea</b> about what you are going to sell. It can be a pizza shop, a memes shop (?), even a fake Gucci shop. Whatever you can think of!
+Today, we are continuing creating <b>our awesome online shop!</b>
+I don't want to see the <b>creativity</b> stop here. Keep it going!
 <br/>
 <br/>
-
-In our project folder, we have a <b>'static' folder</b> which will be used for <b>css and js files</b>, and a <b>'templates' folder</b> where you'll find all of our <b>templates (html files)</b> that we are/will be using.
+Firstly, <b>Clone</b> https://github.com/Your-Username/Y2L-Flask-Routing to your Desktop if you don't have it, and open the folder.
 <br/>
-In today's lab, you'll only work with and edit 3 templates: <b>home.html, about.html and store.html</b>.
-
 <br/>
-This lab is our <l>mini-project<l> for <b>Flask and Databases</b>, in the next 2 sessions we'll keep building on top of it using new material that we'll learn every time :D 
+You can also use Today's lecture as reference if you forgot certain lines - https://tinyurl.com/y2-databases
 
 
-#### Don't forget to *Fork* first and then *Clone* 
 
-## Part 1: Home
-1. Create your first app route and link it to "home.html" in app.py. 
-2. Give home.html some life by adding a title and a link to your store page.
-3. Create a link that leads to your about page as well. <br/>
-(Don't link anything yet, keep the href empty. Like: href="#" or href=" ")
+## Part 1: Setting Up
+1. Create 2 new empty files and save them as "model.py" and "databases.py"
 
-## Part 2: Store
-1. Create an another app route in app.py and link it to "store.html".
-2. Update the "Store" link in home.html according to the new app route.
-3. Give store.html some life by adding a title and a link linking back to your homepage.
-4. Add some products in store.html (link for reference: https://www.w3schools.com/howto/howto_css_product_card.asp )
-5. Create a new app route and link it to "cart.html" (Without editing cart.html)
-6. Modify the products elements in store.html and link the "Add to Cart" button to the new route that you just created.
-* We will not be creating the "Add to Cart" function today, but this will help us set it up for the upcoming sessions.
+## Part 2: Creating Our Table
+1. Edit "model.py" and add these lines in the beginning:
+```python
+from sqlalchemy import Column, Integer, String, Date, ForeignKey, Float, Boolean, DateTime
+from sqlalchemy.ext.declarative import declarative_base
 
 
-## Part 3: About
-1. Create an another app route in app.py and link it to the template "about.html"
-2. Update the "About" link in "home.html" according to the new app route.
-3. Fill in the about us page with information about your company, you can even include yourself as a founder! <br/> (links for reference: https://www.w3schools.com/howto/howto_css_team.asp OR https://www.w3schools.com/howto/howto_css_profile_card.asp)
+Base = declarative_base()
+```
 
-### Bonus:
-- Add a navigation bar to all pages - and link all tabs.
-- Add a carousel in your homepage.
-- Add a design theme to your website:
-	- Font
-	- Colors scheme
-	- And make your website look beautiful
+2. Create a table called "Product" with the following variables:
+- Name (String)
+- Price (Float)
+- Picture Link (String)
+- Description (String)
+
+## Part 3: Creating Our Database Functions
+
+1. Edit "databases.py" and add these lines in the beginning:
+```python
+from model import Base, Product
+
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+
+engine = create_engine('sqlite:///database.db')
+Base.metadata.create_all(engine)
+DBSession = sessionmaker(bind=engine)
+session = DBSession()
+```
+
+2. Write functions to control the database in "databases.py", you have to have at least 5 functions:
+- a function that adds a product
+- a function that edits a specific product by id
+- a function that deletes a specific product by id
+- a function that returns all products in the table
+- a function that returns a specific product by id
+
+
+## Part 4: Adding to Cart
+1. Open "model.py" and create a new table called "Cart" that has this one variable:
+- productID 
+
+** Don't forget the default "id", it's not the same as the variable we created.<br/>
+We'll use "productID" later to get it's other values like: name, price, description...etc.
+
+2. Open "databases.py" and create a new function called "Add_To_Cart" that takes one input which is "productID", and adds this "productID" to the new table you just created.
+ 
+
+## BONUS:
+- Show products in store.html and link all the functions so it could work properly.
+- Create an extra "admin" page that you can access with a special link that has a dashboard to control the website databse, it could have functions like:
+	1. Add Products
+	2. Edit Products
+	3. Delete Products
+	4. Show all products
+ 
