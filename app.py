@@ -18,12 +18,5 @@ def cart():
 	return render_template("cart.html")
 
 
-##### Code here ######
-
-
-
-#####################
-
-
 if __name__ == '__main__':
     app.run(debug=True)

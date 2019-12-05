@@ -36,9 +36,9 @@ def query_product(id):
 	product = session.query(
 		Product).filter_by(
 		name=name).first()
-	return student
+	return product
 
-def Add_To_Cart(productID):
+def add_to_cart(productID):
 	productID_object = productID(
 		productID = productID)
 	session.add(productID_object)
